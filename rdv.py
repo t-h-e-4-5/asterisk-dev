@@ -5,11 +5,17 @@
 #?-----------------------------+++++++++++++++++++++++++IMPORTATIONS+++++++++++++++++++++++---------------------?#
 from app import app
 from config import db
-from flask import Flask,request
+from flask import Flask,request,render_template,jsonify
 from flask_cors import CORS
 from models import Inscription
+from datetime import date
+import matplotlib.pyplot as plt
+import io
+import base64
+import functions
 
-#app.app_context().push()
+
+app.app_context().push()
 #db.drop_all()
 #db.create_all()
 #?-----------------------------+++++++++++++++++++++++++DECLARATIONS DES VARIABLE GLOBALES+++++++++++++++++++++++---------------------?#
@@ -26,6 +32,9 @@ global btsFiliere             # Variable globale pour stocker le choix de la fil
 global LpFiliere              # Variable globale pour stocker le choix de la filière de la Licence Professionnelle 
 global LSoirFiliere           # Variable globale pour stocker le choix de la filière de la Licence du soir
 global callerID               # Variable globale pour stocker le numéro de l'appellant 
+global dateCall               # Variable globale pour stocker la date de l'appel 
+global duree                  # Variable globale pour stocker la durée de l'appel 
+global heur                  # Variable globale pour stocker l'heure de l'appel 
 
 #global filièreBts             # Variable globale pour stocker le choix des filières de BTS
 #global filièreLicencePro      # Variable globale pour stocker le choix des filières de Licence Professionnelle 
@@ -73,11 +82,11 @@ def choixParcours():
 
     if lang == '1':
         if parcours == '1':
-            return "/var/lib/asterisk/sounds/custom/Audio/gsm-fr/Domaine-Bts-LSoir-fr"
+            return "/var/lib/asterisk/sounds/custom/Audio/gsm-fr/Domaine-Bts-fr"
         elif parcours == '2':
             return "/var/lib/asterisk/sounds/custom/Audio/gsm-fr/Domaine-LPro-fr"
         elif parcours == '3':
-            return "/var/lib/asterisk/sounds/custom/Audio/gsm-fr/Domaine-Bts-LSoir-fr"
+            return "/var/lib/asterisk/sounds/custom/Audio/gsm-fr/Domaine-Bts-fr"
         return "CHOIX DE PARCOURS NON PRISE EN CHARGE"
     elif lang == '2':
         if parcours == '1':
@@ -264,14 +273,47 @@ def informati():
 
 
 
-@app.route('/caller')
-def NumID():
+#@app.route('/caller')
+#def NumID():
+    #global callerID 
+    #callerID = request.args.get('callerNum')
+    #print(callerID)
+    #return 'GOOD'
+
+#?-----------------------------+++++++++++++++++++++++++RECUPERATION DU TEMPS ET CONVERSION EN MINUTE+++++++++++++++++++++++---------------------?#
+#?-----------------------------+++++++++++++++++++++++++RECUPERATION DU TEMPS ET CONVERSION EN MINUTE+++++++++++++++++++++++---------------------?#
+#?-----------------------------+++++++++++++++++++++++++RECUPERATION DU TEMPS ET CONVERSION EN MINUTE+++++++++++++++++++++++---------------------?#
+
+@app.route('/time')
+def dateTime():
+    global dateCall
+    global duree
+    global heur
     global callerID 
     callerID = request.args.get('callerNum')
-    print(callerID)
+    duree = request.args.get('tim')
+    dateCall = request.args.get('dat')
+    heur = request.args.get('heureD')
+    print(duree)
+    print(dateCall)
+    print(heur)
+    def convert_to_minutes_seconds(seconds):
+        try:
+            seconds = int(seconds)  # Convertir en nombre entier si c'est une chaîne
+            minutes = seconds // 60
+            seconds %= 60
+            formatted_time = f"{minutes:02d}:{seconds:02d}"
+            return formatted_time
+        except ValueError:
+            return "Erreur de conversion"
+
+    # Exemple d'utilisation
+    input_seconds = duree
+    formatted_time = convert_to_minutes_seconds(input_seconds)
+    duree = convert_to_minutes_seconds(input_seconds)
+    print(f"Temps formaté : {formatted_time}")
+    print(f"Temps formaté : {duree}")
     return 'GOOD'
-
-
 
 #?-----------------------------+++++++++++++++++++++++++INFORMATIONS QUI SERA ENREGISTRÉ DANS LA DB+++++++++++++++++++++++---------------------?#
 #?-----------------------------+++++++++++++++++++++++++INFORMATIONS QUI SERA ENREGISTRÉ DANS LA DB+++++++++++++++++++++++---------------------?#
@@ -289,6 +331,8 @@ def add_db():
     global LpFiliere              # Variable globale pour stocker le choix de la filière de la Licence Professionnelle     
     global LSoirFiliere           # Variable globale pour stocker le choix de la filière de la Licence du soir    
     global callerID               # Variable globale pour stocker le numéro de l'appellant 
+    global dateCall               # Variable globale pour stocker la date de l'appel 
+    global duree                  # Variable globale pour stocker la durée de l'appel
 
     if lang == '1':
         dbLang = 'Français'
@@ -347,7 +391,7 @@ def add_db():
         elif parcours == '3':
             dbParcours = "Licence du Soir"
             if domaine == '1':
-                dbDomaine= "Tertaires"
+                dbDomaine= "Tertaire"
                 if filiere == '1':
                     dbFiliere = "Management des Ressources"
                 elif filiere == '2':
@@ -444,19 +488,89 @@ def add_db():
         #    - {dbDomaine}\n 
          #   - {dbFiliere}\n"
     with app.app_context():
+        #db.drop_all()
         db.create_all()
-        add1 = Inscription(callerId = "{callerID}", lang = dbLang, parcour = dbParcours, domaine = dbDomaine, filiere = dbFiliere)
+        add1 = Inscription(callerId = callerID, lang = dbLang, parcour = dbParcours, domaine = dbDomaine, filiere = dbFiliere, date=dateCall, hour=heur, temps=duree)
         db.session.add(add1)
         db.session.commit()
-    dbinfo = f"Bonjour Madame/Monsieur, vous vous êtes inscrit(e) dans l'institut polytechnique DEFITECH\n- {dbLang}\n- {dbParcours}\n- {dbDomaine}\n- {dbFiliere}\n"
-    print (dbinfo)
-    #add1 = Inscription(callerId = "{callerID}", lang = dbLang, parcour = dbParcours, domaine = dbDomaine, filiere = dbFiliere)
+    #dbinfo = f"Bonjour Madame/Monsieur, vous vous êtes inscrit(e) dans l'institut polytechnique DEFITECH\n- {dbLang}\n- {dbParcours}\n- {dbDomaine}\n- {dbFiliere}\n"
+    #print (dbinfo)
+    #add1 = Inscription(callerId = callerID, lang = dbLang, parcour = dbParcours, domaine = dbDomaine, filiere = dbFiliere)
     #db.session.add(add1)
     #db.session.commit()
     return 'GOOD'
 
+@app.route('/in')
+def index():
+    #inscriptions = Inscription.query.all()
+    #return render_template('index3.html', inscriptions=inscriptions)
+    return render_template('index.html')
+
+@app.route('/plot')
+def generate_chart():
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    counts = [0] * 12
+
+    inscriptions = Inscription.query.all()
+    for inscription in inscriptions:
+        month_index = int(inscription.date.split(':')[1]) - 1
+        counts[month_index] += 1
+
+    plt.bar(months, counts)
+    plt.xlabel('Months')
+    plt.ylabel('Number of Inscriptions')
+    plt.title('Monthly Inscription Statistics')
+
+    # Convert the plot to an image
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_img = base64.b64encode(img.getvalue()).decode()
+    return render_template('ch.html', plot_img=plot_img)
+
+
+#functions.get_all()
+
+@app.route('/find', methods=['GET'])
+def get_alld():
+    try:
+        call_all = Inscription.query.all()
+        data = [{"id": call_al.id, "caller ID": call_al.callerId, 
+                 "Langue": call_al.lang,"Parcour": call_al.parcour, 
+                 "Domaine": call_al.domaine, "Filière": call_al.filiere, 
+                 "Date": call_al.date, "Heure": call_al.hour, "Tepms":call_al.temps} for call_al in call_all]
+        response = jsonify(data)
+        return response
+    except Exception as e:
+        print(e)
+        return render_template('pages-error-404.html')
+    finally:
+        db.session.rollback()
+        db.session.close()
 
 
 
-if (__name__ == '__main__'):
-    app.run(debug=True, port=5555, host='0.0.0.0')
+@app.route('/test', methods=['GET', 'POST'])
+def count():
+    try:
+        english_count = Inscription.query.filter_by(lang='anglais').count()
+        french_count = Inscription.query.filter_by(lang='français').count()
+        data = [{french_count,english_count}]
+
+        print("x_x_x_x_x_x_x_x_x_x : ", english_count)
+        print("x_x_x_x_x_x_x_x_x_x : ", french_count)
+
+        response = jsonify(data)
+        return response
+    except Exception as e:
+        print(e)
+        return render_template('pages-error-404.html')
+    finally:
+        db.session.rollback()
+        db.session.close()
+
+
+
+
+#if (__name__ == '__main__'):
+ #   app.run(debug=True, port=5555, host='0.0.0.0')

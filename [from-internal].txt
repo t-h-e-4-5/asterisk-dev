@@ -1,0 +1,26 @@
+[from-internal]
+;exten = 100,1,Answer()
+;same => n,Wait(1)
+
+;same => n,Playback(hello-world)
+;same => n,Hangup()
+
+
+exten = 100,1,Set(response=${CURL(http://127.0.0.1:8080/)})
+same => n,Answer()
+same => n,Read(lang,${response},0)
+same => n,Set(response=${CURL(http://127.0.0.1:800/langues?lang=${lang})})
+same => n,Read(profil,${response},0)
+same => n,Set(response=${CURL(http://127.0.0.1:8080/profils?profil=${profil})})
+same => n,Read(categorie,${response},0)
+same => n,Set(response=${CURL(http://127.0.0.1:8080/categories?categorie=${categorie})})
+same => n,Read(humain,${response},0)
+same => n,Set(response=${CURL(http://127.0.0.1:8080/humains?humain=${humain})})
+same => n,Read(symptomeFiver,${response},0)
+same => n,Set(response=${CURL(http://127.0.0.1:8080/symptomeFiver?symptomeFiver=${symptomeFiver})})
+same => n,Read(symptomeVomi,${response},0)
+same => n,Set(response=${CURL(http://127.0.0.1:8080/symptomeVomi?symptomeVomi=${symptomeVomi})})
+same => n,Read(symptomeDiarh,${response},0)
+same => n,Set(response=${CURL(http://127.0.0.1:8080/symptomeDiarh?symptomeDiarh=${symptomeDiarh})})
+same = n,Playback(${response})
+same = n,Hangup()
