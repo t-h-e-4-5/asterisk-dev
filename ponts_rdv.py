@@ -17,6 +17,7 @@ from flask import Flask,request,render_template,jsonify
 from flask_cors import CORS
 from models import Inscription
 from datetime import date
+from routes import app_routes, functions
 
 #?-----------------------------+++++++++++++++++++++++++CONNEXION DB+++++++++++++++++++++++---------------------?#
     #?-------------------------+++++++++++++++++++++++++CONNEXION DB+++++++++++++++++++++++----------------?#
@@ -400,24 +401,6 @@ def choixFiliere():
     #?-----------------------------+++++++++++++++++++++++++LES INFORMATIONS SUR FRAIS, TENUE, DATE DE RENTRÉE+++++++++++++++++++++++---------------------?#
         #?-----------------------------+++++++++++++++++++++++++LES INFORMATIONS SUR FRAIS, TENUE, DATE DE RENTRÉE+++++++++++++++++++++++---------------------?#
 
-"""@app.route('/pont_--')
-def dateFrais():
-    global pont_1
-    global pont_2
-    global pont_3
-    if pont_1 == '1':#!FR  
-        if pont_2 == '1':#!FR  #!INSCRIPTION
-            return fr_file_mode_paie
-        return erreur
-    elif pont_1 == '2': #!ENG 
-        if pont_2 == '1': #!ENG #!INSCRIPTION
-            return eng_file_mode_paie
-        return erreur
-    return erreur
-
-    #! FIN DE LA DFONCTION 
-"""
-
 #?-----------------------------+++++++++++++++++++++++++LES INFORMATIONS SUR LES MODALITES DE PAIEMENT+++++++++++++++++++++++---------------------?#
     #?-----------------------------+++++++++++++++++++++++++LES INFORMATIONS SUR LES MODALITES DE PAIEMENT+++++++++++++++++++++++---------------------?#
         #?-----------------------------+++++++++++++++++++++++++LES INFORMATIONS SUR LES MODALITES DE PAIEMENT+++++++++++++++++++++++---------------------?#
@@ -769,6 +752,37 @@ def add_db():
         dbinfo = f"Hello Madam / Sir, you have just booked a place at the POLYTECHNIC INSTITUTE DEFITECH in the course {db_parcours}, domain {db_domaine} sector {db_filiere} and your method of payment for school fees will be {db_modalite}\nThank you for your trust\nWith DEFITECH your success is our priority"
     print(dbinfo)
     return "OK"
+
+
+#?---WEB--?#
+
+app_routes.dashboard()
+app_routes.stats()
+app_routes.data()
+app_routes.profile()
+app_routes.contact()
+app_routes.login()
+app_routes.erreur()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if (__name__ == '__main__'):
     app.run(debug=True, port=5555, host='0.0.0.0')
