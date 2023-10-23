@@ -1,2 +1,8 @@
 /envAsterisk/*
 /__pycache__/*
+/templates/ignore/*
+acceuil-eng-fr.gsm
+ad.js
+serverssh.py
+ssh.py
+script_rdv.py
