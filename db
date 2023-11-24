@@ -1,0 +1,12 @@
+INSERT INTO ma_table (callerId, lang, parcour, domaine, filiere, modalite, date, hour, temps)
+VALUES
+(101, 'Français', 'Licence Professionnelle', 'Sciences et Technologies', 'Systèmes et Réseaux', 'Annuelle', '23:10:23', '11:44:46', '01:51'),
+(102, 'Anglais', 'Licence Professionnelle', 'Sciences et Technologies', 'Génie Logiciel', 'Annuelle', '23:10:23', '11:44:46', '02:15'),
+(102, 'Français', 'Licence Professionnelle', 'Sciences et Technologies', 'Systèmes et Réseaux', 'Trimestrielle', '20:10:23', '11:44:46', '02:15'),
+(102, 'Français', 'Licence Professionnelle', 'Sciences et Technologies', 'Systèmes et Réseaux', 'Annuelle', '23:10:23', '11:44:46', '02:15'),
+(102, 'Anglais', 'Licence Professionnelle', 'Sciences et Technologies', 'Génie Logiciel', 'Mensuelle', '23:10:23', '11:44:46', '02:15'),
+
+(102, 'Français', 'Licence Professionnelle', 'Sciences et Technologies', 'Génie Logiciel', 'Mensuelle', '23:10:23', '11:44:46', '02:15'),
+(102, 'Anglais', 'Licence Professionnelle', 'Sciences et Technologies', 'Génie Logiciel', 'Mensuelle', '23:10:23', '11:44:46', '02:15'),
+
+(103, 'Anglais', 'Licence Professionnelle', 'Sciences et Technologies', 'Systèmes et Réseaux', 'Annuelle', '23:10:23', '11:44:46', '01:45');

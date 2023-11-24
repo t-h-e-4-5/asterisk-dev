@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Ajoutez les liens et les scripts nécessaires pour ApexCharts -->
+</head>
+<body>
+    <div id="chart"></div>
+
+    <script>
+        var options = {
+            chart: {
+                height: 280,
+                type: "area"
+            },
+            dataLabels: {
+                enabled: true
+            },
+            series: [{
+                name: "Series 1",
+                data: [
+                    {% for item in data %}
+                        {{ item['count'] }},
+                    {% endfor %}
+                ]
+            }],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.9,
+                    stops: [0, 90, 100]
+                }
+            },
+            xaxis: {
+                categories: [
+                    {% for item in data %}
+                        "{{ item['date'] }}",
+                    {% endfor %}
+                ]
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+</body>
+</html>

@@ -66,3 +66,33 @@ def delete():
     finally:
         db.session.rollback()
         db.session.close()
+
+
+
+@app.route('/ok', methods=['GET', 'POST'])
+def get_count():
+    try:
+        # Compter les inscriptions en Licence Professionnelle par date
+        count_by_date = (
+            db.session.query(func.count(Inscription.id).label('nombre_inscriptions'), func.date(Inscription.date).label('date'))
+            .filter(Inscription.filiere == 'Licence Professionnelle')
+            .group_by(func.date(Inscription.date))
+            .all()
+        )
+
+        # Construire la réponse JSON
+        data = []
+        for row in count_by_date:
+            data.append({
+                "date": row.date.strftime("%Y-%m-%d"),
+                "nombre_inscriptions": row.nombre_inscriptions
+            })
+
+        response = jsonify(data)
+        return response
+    except Exception as e:
+        print(e)
+        return render_template('pages-error-404.html')
+    finally:
+        db.session.rollback()
+        db.session.close()

@@ -37,6 +37,8 @@ global callerNum
 global time_call
 global dateCall
 global heur
+global db_modalite
+
 
 
 #?-----------------------------+++++++++++++++++++++++++DECLARATIONS DES VARIABLES GLOBALES POUR LES FICHIERS+++++++++++++++++++++++---------------------?#
@@ -482,6 +484,83 @@ def pont_temps():
     #?-----------------------------+++++++++++++++++++++++++RECUPERATION DES DONNEES POUR LA DB+++++++++++++++++++++++---------------------?#
         #?-----------------------------+++++++++++++++++++++++++RECUPERATION DES DONNEES POUR LA DB+++++++++++++++++++++++---------------------?#
 
+
+@app.route('/togo')
+def func_modalite():
+    global pont_1
+    global pont_2
+    global pont_3
+    global pont_4
+    global pont_5
+    global pont_6
+    global callerNum
+    global time_call
+    global dateCall
+    global heur
+    global db_modalite
+    if pont_1 == '1': #!FR
+        if pont_2 =='1': #!FR #!INSCRIPTION
+            if pont_3 == '1': #!FR #!INSCRIPTION #!BTS
+                if pont_4 == '1'or pont_4 == '2': #!FR #!INSCRIPTION #!BTS #!TERTAIRES
+                    if pont_5 == '1' or pont_5 == '2' or pont_5 == '3' or pont_5 == '4' or pont_5 == '5' or pont_5 == '6' or pont_5 == '7' or pont_5 == '8' or pont_5 == '9' :
+                        if pont_6 == '1':
+                            db_modalite = "Annuelle"
+                        elif pont_6 == '2':
+                            db_modalite = "Trimestielle"
+                        elif pont_6 == '3':
+                            db_modalite = "Mensuelle"
+            elif pont_3 == '2': #!FR #!INSCRIPTION #!LPJ 
+                if pont_4 == '1' or pont_4 == '2' or pont_4 =='3':#!FR #!INSCRIPTION #!LPJ #!SCIENCE TECH #!SCIENCE HOMME SOCIETE #!SCIENCE ECONOMIEQUES GESTIONS
+                    if pont_5 == '1' or pont_5 == '2' or pont_5 == '3':
+                        if pont_6 == '1':
+                            db_modalite = "Annuelle"
+                        elif pont_6 == '2':
+                            db_modalite = "Trimestielle"
+                        elif pont_6 == '3':
+                            db_modalite = "Mensuelle"
+            elif pont_3 == '3': #!FR #!INSCRIPTION #!LPS
+                if pont_4 == '1' or pont_4 == '2': #!FR #!INSCRIPTION #!LPS #!TERTIAIRES #!TECH
+                    if pont_5 == '1' or pont_5 == '2' or pont_5 == '3' or pont_5 =='4':
+                        if pont_6 == '1':
+                            db_modalite = "Annuelle"
+                        elif pont_6 == '2':
+                            db_modalite = "Trimestielle"
+                        elif pont_6 == '3':
+                            db_modalite = "Mensuelle"
+    elif pont_1 == '1': #!ENG
+        if pont_2 =='1': #!ENG #!INSCRIPTION
+            if pont_3 == '1': #!ENG #!INSCRIPTION #!BTS
+                if pont_4 == '1'or pont_4 == '2': #!ENG #!INSCRIPTION #!BTS #!TERTAIRES
+                    if pont_5 == '1' or pont_5 == '2' or pont_5 == '3' or pont_5 == '4' or pont_5 == '5' or pont_5 == '6' or pont_5 == '7' or pont_5 == '8' or pont_5 == '9' :
+                        if pont_6 == '1':
+                            db_modalite = "Annuelle"
+                        elif pont_6 == '2':
+                            db_modalite = "Trimestielle"
+                        elif pont_6 == '3':
+                            db_modalite = "Mensuelle"
+            elif pont_3 == '2': #!ENG #!INSCRIPTION #!LPJ #!SCIENCE TECH #!SCIENCE HOMME SOCIETE #!SCIENCE ECONOMIEQUES GESTIONS
+                if pont_4 == '1' or pont_4 == '2' or pont_4 =='3':
+                    if pont_5 == '1' or pont_5 == '2' or pont_5 == '3':
+                        if pont_6 == '1':
+                            db_modalite = "Annuelle"
+                        elif pont_6 == '2':
+                            db_modalite = "Trimestielle"
+                        elif pont_6 == '3':
+                            db_modalite = "Mensuelle"
+            elif pont_3 == '3': #!ENG #!INSCRIPTION #!LPS #!TERTIAIRES #!TECH
+                if pont_4 == '1' or pont_4 == '2':
+                    if pont_5 == '1' or pont_5 == '2' or pont_5 == '3' or pont_5 =='4':
+                        if pont_6 == '1':
+                            db_modalite = "Annuelle"
+                        elif pont_6 == '2':
+                            db_modalite = "Trimestielle"
+                        elif pont_6 == '3':
+                            db_modalite = "Mensuelle"
+    print(db_modalite)        
+    return db_modalite
+
+
+
 @app.route('/db')
 def add_db():
     global pont_1
@@ -494,7 +573,8 @@ def add_db():
     global time_call
     global dateCall
     global heur
-    
+    global db_modalite
+
     if pont_1 == '1': #!FR
         db_lang = "Français"
         if pont_2 =='1': #!FR #!INSCRIPTION
@@ -505,10 +585,6 @@ def add_db():
                     db_domaine = "Tertiaires"
                     if pont_5 == '1': 
                         db_filiere = "BTS Sécrétaire de Direction"
-                        if pont_6 == '1':
-                            db_modalite ="AZERTY"
-                        elif pont_6 == '2':
-                            db_modalite ="AZERTY"
                     elif pont_5 == '2':
                         db_filiere = "BTS Assistant de gestion PME-PMI"
                     elif pont_5 == '3':
@@ -525,14 +601,16 @@ def add_db():
                         db_filiere = "BTS Gestion des Ressources Humaines"
                     elif pont_5 == '9':
                         db_filiere = "BTS Transport Logistique et Transit"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
-                        elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
-                        elif pont_6 == '3':
-                            db_modalite = "Mensuelle"
+                    """print(db_filiere)
+                    if pont_6 == '1':
+                        db_modalite = "Annuelle"
+                    elif pont_6 == '2':
+                        db_modalite = "Trimestielle"
+                    elif pont_6 == '3':
+                        db_modalite = "Mensuelle"
+                        print(db_modalite)"""
                 elif pont_4 == '2': #!FR #!INSCRIPTION #!BTS #!TECHNOLOGIQUES
-                    db_domaine= "Technologiques"
+                    db_domaine = "Technologiques"
                     if pont_5 == '1':
                         db_filiere = "BTS Adminstrateur de Réseaux Locaux"
                     elif pont_5 == '2':
@@ -541,12 +619,13 @@ def add_db():
                         db_filiere = "BTS Télécommunications et Réseaux"
                     elif pont_5 == '4':
                         db_filiere = "BTS Maintenance Informaique et Réseaux"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
             elif pont_3 == '2': #!FR #!INSCRIPTION #!LPJ 
                 db_parcours = "Licence Professionelle"
                 if pont_4 == '1': #!FR #!INSCRIPTION #!LPJ #!SCIENCE TECH
@@ -555,22 +634,24 @@ def add_db():
                         db_filiere = "Génie Logiciel"
                     elif pont_5 == '2':
                         db_filiere = "Systèmes et Réseaux"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
                 elif pont_4 == '2': #!FR #!INSCRIPTION #!LPJ #!SCIENCE HOMME SOCIETE
                     db_domaine = "Sciences de l'Homme et de la societé"
                     if pont_5 == '1':
                         db_filiere = "Communication des Organisations"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
                 elif pont_4 == '3': #!FR #!INSCRIPTION #!LPJ #!SCIENCE ECONOMIQUES GESTIONS
                     db_domaine = "Sciences Economiques et de Gestions"
                     if pont_5 == '1':
@@ -579,12 +660,13 @@ def add_db():
                         db_filiere = "Gestions Commerciale"
                     elif pont_5 == '3':
                         db_filiere = "Managements des Resources Humaines"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
             elif pont_3 == '3' : #!FR #!INSCRIPTION #!LPS 
                 db_parcours = "Licence du Soir"
                 if pont_4 == '1': #!FR #!INSCRIPTION #!LPS #!TERTIAIRE
@@ -597,24 +679,26 @@ def add_db():
                         db_filiere = "Communication et Relation Publique"
                     elif pont_5 == '4':
                         db_filiere = "Audit et Contrôle de Gestion"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
                 elif pont_4 == '2': #!FR #!INSCRIPTION #!LPS #!TECHNOLOGIQUE
                     db_domaine = "Technologique"
                     if pont_5 == '1':
                         db_filiere = "Réseaux et Télécomunication option Administration et Sécurité des Réseaux d'entreprises"
                     elif pont_5 == '2':
                         db_filiere = "Génie Lociel"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
     elif pont_1 == '2': #!ENG
         db_lang = "English"
         if pont_2 =='1': #!ENG #!INSCRIPTION
@@ -641,12 +725,13 @@ def add_db():
                         db_filiere = "BTS Human Resources Management"
                     elif pont_5 == '9':
                         db_filiere = "BTS Transport Logistics and Transit"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
                 elif pont_4 == '2': #!ENG #!INSCRIPTION #!BTS #!TECHNOLOGIQUES
                     db_domaine= "Technological"
                     if pont_5 == '1':
@@ -657,12 +742,13 @@ def add_db():
                         db_filiere = "BTS Telecommunications and Networks"
                     elif pont_5 == '4':
                         db_filiere = "BTS Computer Maintenance and Networks"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
             elif pont_3 == '2': #!ENG #!INSCRIPTION #!LPJ 
                 db_parcours = "Professional License"
                 if pont_4 == '1': #!ENG #!INSCRIPTION #!LPJ #!SCIENCE TECH
@@ -671,22 +757,24 @@ def add_db():
                         db_filiere = "Software Engineering"
                     elif pont_5 == '2':
                         db_filiere = "Systems and Networks"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
                 elif pont_4 == '2': #!ENG #!INSCRIPTION #!LPJ #!SCIENCE HOMME SOCIETE
                     db_domaine = "Human and social sciences"
                     if pont_5 == '1':
                         db_filiere = "Communication of Organizations"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
                 elif pont_4 == '3': #!ENG #!INSCRIPTION #!LPJ #!SCIENCE ECONOMIQUES GESTIONS
                     db_domaine = "Economic and Management Sciences"
                     if pont_5 == '1':
@@ -695,12 +783,13 @@ def add_db():
                         db_filiere = "Commercial Management"
                     elif pont_5 == '3':
                         db_filiere = "Human Resources Management"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
             elif pont_3 == '3' : #!ENG #!INSCRIPTION #!LPS 
                 db_parcours = "Evening License"
                 if pont_4 == '1': #!ENG #!INSCRIPTION #!LPS #!TERTIAIRE
@@ -713,24 +802,27 @@ def add_db():
                         db_filiere = "Communication and Public Relations"
                     elif pont_5 == '4':
                         db_filiere = "Audit and Management Control"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
                 elif pont_4 == '2': #!ENG #!INSCRIPTION #!LPS #!TECHNOLOGIQUE
                     db_domaine = "Technological"
                     if pont_5 == '1':
                         db_filiere = "Networks and Telecommunications option Administration and Security of Corporate Networks"
                     elif pont_5 == '2':
                         db_filiere = "Social Engineering"
-                        if pont_6 == '1':
-                            db_modalite ="Annuelle"
+                        """if pont_6 == '1':
+                            db_modalite = "Annuelle"
                         elif pont_6 == '2':
-                            db_modalite ="Trimestielle"
+                            db_modalite = "Trimestielle"
                         elif pont_6 == '3':
                             db_modalite = "Mensuelle"
+                            """
+                        
     print(callerNum)
     print(callerNum)
     print(callerNum)
