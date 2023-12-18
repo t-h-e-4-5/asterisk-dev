@@ -559,6 +559,29 @@ def func_modalite():
     print(db_modalite)        
     return db_modalite
 
+"""from datetime import datetime
+def jour():
+    
+    # Obtenir la date et l'heure actuelles
+    maintenant = datetime.now()
+
+    # Extraire le jour de la semaine (0 pour lundi, 1 pour mardi, ..., 6 pour dimanche)
+    jour_actuel = maintenant.weekday()
+
+    # Afficher le jour de la semaine
+    jours_de_la_semaine = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    print("Le jour actuel est :", jours_de_la_semaine[jour_actuel])
+    return jour_actuel"""
+
+@app.route('/bye')
+def bye():
+    global pont_1
+    #pont_1 = request.args.get('pont_1')
+    if pont_1 == '1': #!FR
+        return fr_bye
+    elif pont_1 == '2': #!ENG
+        return eng_bye
+    return erreur
 
 
 @app.route('/db')

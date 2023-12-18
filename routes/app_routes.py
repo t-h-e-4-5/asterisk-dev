@@ -41,10 +41,36 @@ from config import db
 import config 
 import models
 from models import Inscription
-@app.route('/dashboard')
+"""@app.route('/dashboard')
 def dashboard():
     return render_template('index.html')
-    #return render_template('home.html')
+    #return render_template('home.html')"""
+
+
+
+
+from datetime import datetime
+
+
+
+
+
+
+
+
+
+
+@app.route('/dashboard')
+def dashboard():
+    # Effectuez une requête pour récupérer le nombre d'appels distincts dans la colonne callerId
+    nombre_appels = Inscription.query.distinct(Inscription.callerId).count()
+    nombre_annuelle = Inscription.query.filter(Inscription.modalite == 'Annuelle').count()
+    data_parcours = Inscription.query.filter(Inscription.parcour == '')
+
+    #nombre_annuelle = Inscription.query.distinct(Inscription.modalite).count()
+
+    return render_template('index.html', nombre_appels=nombre_appels, nombre_annuelle = nombre_annuelle)
+
 
 @app.route('/stats')
 def stats():
